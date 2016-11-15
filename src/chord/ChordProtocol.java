@@ -1,9 +1,8 @@
 /**
  * 
  */
-package peersim.chord;
+package chord;
 
-import peersim.chord.messaging.ChordMessage;
 import peersim.config.Configuration;
 import peersim.core.CommonState;
 import peersim.core.Network;

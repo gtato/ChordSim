@@ -1,9 +1,9 @@
 
-package peersim.chord;
+package chord;
 
 import java.math.BigInteger;
 
-import peersim.chord.messaging.ChordMessage;
+
 import peersim.core.*;
 import peersim.config.Configuration;
 import peersim.edsim.EDSimulator;

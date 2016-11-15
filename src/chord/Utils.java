@@ -1,4 +1,4 @@
-package peersim.chord;
+package chord;
 
 import java.math.BigInteger;
 import java.util.ArrayList;

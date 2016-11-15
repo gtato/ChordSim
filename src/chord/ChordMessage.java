@@ -1,7 +1,7 @@
 /**
  * 
  */
-package peersim.chord.messaging;
+package chord;
 
 import java.math.BigInteger;
 import java.util.ArrayList;

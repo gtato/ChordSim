@@ -1,4 +1,4 @@
-package peersim.chord;
+package chord;
 
 import peersim.core.Control;
 import peersim.core.Network;
