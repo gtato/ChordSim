@@ -151,7 +151,7 @@ public class ChordProtocol implements EDProtocol, Comparable<ChordProtocol> {
 		hs.addAll(Arrays.asList(successorList));
 		fullTable.addAll(hs);
 		fullTable.sort(new Comparator<ChordProtocol>() {
-			@Override
+			
 			public int compare(ChordProtocol arg0, ChordProtocol arg1) {
 				int dist1 = Utils.distance(chordId, arg0.chordId);
 				int dist2 = Utils.distance(chordId, arg1.chordId);
@@ -252,7 +252,7 @@ public class ChordProtocol implements EDProtocol, Comparable<ChordProtocol> {
 		
 	}
 	
-	@Override
+	
 	public int compareTo(ChordProtocol arg0) {
 		if (arg0 == null) return 100; 
 		return this.chordId.compareTo(arg0.chordId);
@@ -265,7 +265,7 @@ public class ChordProtocol implements EDProtocol, Comparable<ChordProtocol> {
             
         } catch (CloneNotSupportedException e) {
         } // never happens
-        return inp;
+        return inp; 
     }
 
 	

@@ -117,7 +117,6 @@ public class ChordInitializer implements NodeInitializer, Control {
 		}
 	
 		
-		@Override
 		public int compare(Node arg0, Node arg1) {
 			BigInteger one = ((ChordProtocol) ( arg0).getProtocol(pid)).chordId;
 			BigInteger two = ((ChordProtocol) ( arg1).getProtocol(pid)).chordId;
