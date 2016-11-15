@@ -1,6 +1,8 @@
 # ChordSim
-Chord implementation based on PeerSim
+An implementation of Chord on top of the PeerSim simulator.
 
 http://peersim.sourceforge.net/
 
 Based on the implemetnation on the PeerSim website, but significantly improved. 
+
+![alt tag](https://raw.githubusercontent.com/gtato/ChordSim/master/chord.png)
