@@ -3,7 +3,7 @@ package peersim.chord;
 
 import java.math.BigInteger;
 
-import peersim.chord.messaging.LookUpMessage;
+import peersim.chord.messaging.ChordMessage;
 import peersim.core.*;
 import peersim.config.Configuration;
 import peersim.edsim.EDSimulator;
@@ -47,8 +47,9 @@ public class TrafficGenerator implements Control {
 		
 		BigInteger trgID = targetCp.chordId;
 //		trgID = new BigInteger("11111");
-		LookUpMessage message = new LookUpMessage(sender, trgID);
-		message.addToPath(senderCp.chordId);
+		ChordMessage message = new ChordMessage(ChordMessage.LOOK_UP, trgID);
+		message.setSender(senderCp.chordId);
+				
 		EDSimulator.add(0, message, sender, pid);
 		
 		return false;

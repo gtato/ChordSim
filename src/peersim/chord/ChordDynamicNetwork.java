@@ -24,7 +24,9 @@ public class ChordDynamicNetwork extends DynamicNetwork {
 		for(int i=0; i < n; i++){
 			ChordProtocol cp = Utils.getChordFromNode(Network.get(inx.get(i)));
 			System.out.println("Node " + cp.chordId + " died");
+			Utils.NODES.remove(cp.chordId);
 			Network.remove(inx.get(i));
+			
 //			Network.get(inx.get(i)).setFailState(Fallible.DOWN);
 		}
 	}

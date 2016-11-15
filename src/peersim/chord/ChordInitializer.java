@@ -26,14 +26,14 @@ public class ChordInitializer implements NodeInitializer, Control {
 
 	
 	public boolean execute() {
-		ArrayList<BigInteger> ids = generateIDs(Network.size());
+		ArrayList<BigInteger> ids = Utils.generateIDs(Network.size());
 		
 		for (int i = 0; i < Network.size(); i++) {
 			Node node = (Node) Network.get(i);
 			ChordProtocol cp = Utils.getChordFromNode(node);
 			cp.node = node;
 			cp.chordId = ids.get(i);
-			Utils.NODE_IDS.add(cp.chordId);
+			Utils.NODES.put(cp.chordId, cp);
 			cp.fingerTable = new ChordProtocol[Utils.M];
 			cp.successorList = new ChordProtocol[Utils.SUCC_SIZE];
 		}
@@ -47,34 +47,8 @@ public class ChordInitializer implements NodeInitializer, Control {
 	
 	
 	public void initialize(Node n) {
-		join(n);
-	}
-
-	public void join(Node myNode) {
-		ChordProtocol cp = (ChordProtocol) myNode.getProtocol(pid);
-		cp.node = myNode;
-		// search a node to join
-		Node n;
-		do {
-			n = Network.get(CommonState.r.nextInt(Network.size()));
-		} while (n == null || !n.isUp());
-		
-		cp.chordId = generateNewID();
-		Utils.NODE_IDS.add(cp.chordId);
-		ChordProtocol cpRemote = Utils.getChordFromNode(n);
-
-		ChordProtocol successor = cpRemote.findSuccessor(cp.chordId);
-		cp.successorList = new ChordProtocol[Utils.SUCC_SIZE];
-		cp.successorList[0] = successor;
-		cp.predecessor = successor.predecessor;
-		cp.fingerTable = new ChordProtocol[Utils.M];
-		cp.updateSuccessors();
-		for (int i = 0; i < cp.fingerTable.length; i++) {
-			long a = (long) (cp.chordId.longValue() + Math.pow(2, i)) %(long)Math.pow(2, Utils.M);
-			BigInteger id = new BigInteger(a+"");
-			cp.fingerTable[i] = cpRemote.findSuccessor(id); 
-		}
-		System.out.println("Node " + cp.chordId + " is in da house");
+		ChordProtocol cp = (ChordProtocol) n.getProtocol(pid);
+		cp.join(n);
 	}
 
 	public ChordProtocol findNodeforId(BigInteger id) {
@@ -131,23 +105,7 @@ public class ChordInitializer implements NodeInitializer, Control {
 		}
 	}
 	
-	private ArrayList<BigInteger> generateIDs(int nr){
-		HashSet<BigInteger> ids = new HashSet<BigInteger>();
-		
-		while(ids.size() != nr)		
-			ids.add(new BigInteger(Utils.M, CommonState.r));
-		
-		return new ArrayList<BigInteger>(ids);
-	}
 	
-	private BigInteger generateNewID(){
-		BigInteger newId;
-		do
-			newId= new BigInteger(Utils.M, CommonState.r);
-		while(Utils.NODE_IDS.contains(newId));
-		
-		return newId;
-	}
 	
 	
 	class NodeComparator implements Comparator<Node> {

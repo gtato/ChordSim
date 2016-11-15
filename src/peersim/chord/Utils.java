@@ -2,8 +2,11 @@ package peersim.chord;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 import peersim.config.Configuration;
+import peersim.core.CommonState;
 import peersim.core.Node;
 
 
@@ -11,7 +14,7 @@ public class Utils {
 	public static int PID;
 	public static int M;
 	public static int SUCC_SIZE;
-	public static ArrayList<BigInteger> NODE_IDS = new ArrayList<BigInteger>();
+	public static HashMap<BigInteger, ChordProtocol> NODES = new HashMap<BigInteger, ChordProtocol>();
 	private static boolean initialized = false;
 	public static void initialize(int pid){
 		if(!initialized){
@@ -32,6 +35,24 @@ public class Utils {
 		if(ib >= ia) return ib-ia;
 		return ib+(int)Math.pow(2, M)-ia;
 		
+	}
+	
+	public static ArrayList<BigInteger> generateIDs(int nr){
+		HashSet<BigInteger> ids = new HashSet<BigInteger>();
+		
+		while(ids.size() != nr)		
+			ids.add(new BigInteger(Utils.M, CommonState.r));
+		
+		return new ArrayList<BigInteger>(ids);
+	}
+	
+	public static BigInteger generateNewID(){
+		BigInteger newId;
+		do
+			newId= new BigInteger(Utils.M, CommonState.r);
+		while(Utils.NODES.containsKey(newId));
+		
+		return newId;
 	}
 	
 }
