@@ -88,7 +88,7 @@ public class ChordProtocol implements EDProtocol, Comparable<ChordProtocol> {
 	
 	public void join(Node myNode) {
 		node = myNode;
-		// search a node to join
+		// search a node to join 
 		Node n;
 		do {
 			n = Network.get(CommonState.r.nextInt(Network.size()));
