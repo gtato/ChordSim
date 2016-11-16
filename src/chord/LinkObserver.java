@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -116,9 +117,10 @@ public class LinkObserver extends GraphObserver {
             double x_to = coordinates.get(i)[0];
             double y_to = coordinates.get(i)[1];
             first = true;
-            for(ChordProtocol finger : current.fingerTable){
-            	if(finger == null || !finger.isUp()) continue;
-            	double[] coords = coordinates.get(positions.get(finger.chordId.longValue()));
+            for(BigInteger finger : current.fingerTable){
+            	ChordProtocol cp = Utils.NODES.get(finger);
+            	if(cp== null || !cp.isUp()) continue;
+            	double[] coords = coordinates.get(positions.get(cp.chordId.longValue()));
             	double x_from =  coords[0];
                 double y_from =   coords[1];
                 String label = first ? current.chordId.intValue()+"": "";

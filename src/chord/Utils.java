@@ -12,15 +12,22 @@ import peersim.core.Node;
 
 public class Utils {
 	public static int PID;
+	public static int TID;
 	public static int M;
 	public static int SUCC_SIZE;
 	public static HashMap<BigInteger, ChordProtocol> NODES = new HashMap<BigInteger, ChordProtocol>();
+	public static ArrayList<ChordMessage> receivedMessages;
 	private static boolean initialized = false;
-	public static void initialize(int pid){
+	
+	public static int FAILS=0, SUCCESS=0; 
+	
+	public static void initialize(int pid, int tid){
 		if(!initialized){
 			PID = pid;
+			TID = tid;
 			SUCC_SIZE = Configuration.getInt("SUCC_SIZE", 4);
 			M = Configuration.getInt("M", 10);
+			receivedMessages = new ArrayList<ChordMessage>();
 		}
 	}
 	
@@ -53,6 +60,14 @@ public class Utils {
 		while(Utils.NODES.containsKey(newId));
 		
 		return newId;
+	}
+	
+	public static boolean isUp(BigInteger nid){
+		if(!NODES.containsKey(nid) || NODES.get(nid) == null)
+			return false;
+		
+		return NODES.get(nid).isUp();
+			
 	}
 	
 }

@@ -14,14 +14,16 @@ import peersim.dynamics.NodeInitializer;
 public class ChordInitializer implements NodeInitializer, Control {
 
 	private static final String PAR_PROT = "protocol";
-	
+	private static final String PAR_TRANS = "transport";
 
 	int pid = 0;
+	int tid = 0;
 	
 
 	public ChordInitializer(String prefix) {
 		pid = Configuration.getPid(prefix + "." + PAR_PROT);
-		Utils.initialize(pid);
+		tid = Configuration.getPid(prefix + "." + PAR_TRANS);
+		Utils.initialize(pid, tid);
 	}
 
 	
@@ -34,8 +36,8 @@ public class ChordInitializer implements NodeInitializer, Control {
 			cp.node = node;
 			cp.chordId = ids.get(i);
 			Utils.NODES.put(cp.chordId, cp);
-			cp.fingerTable = new ChordProtocol[Utils.M];
-			cp.successorList = new ChordProtocol[Utils.SUCC_SIZE];
+			cp.fingerTable = new BigInteger[Utils.M];
+			cp.successorList = new BigInteger[Utils.SUCC_SIZE];
 		}
 		NodeComparator nc = new NodeComparator(pid);
 		Network.sort(nc);
@@ -67,17 +69,17 @@ public class ChordInitializer implements NodeInitializer, Control {
 		for (int i = 0; i < Network.size(); i++) {
 			ChordProtocol cp = Utils.getChordFromNode(Network.get(i));
 			for (int a = 0; a < Utils.SUCC_SIZE; a++) 
-				cp.successorList[a] = Utils.getChordFromNode(Network.get((a + i + 1)%Network.size()));
+				cp.successorList[a] = Utils.getChordFromNode(Network.get((a + i + 1)%Network.size())).chordId;
 			if (i > 0)
-				cp.predecessor =  Utils.getChordFromNode(Network.get(i - 1));
+				cp.predecessor =  Utils.getChordFromNode(Network.get(i - 1)).chordId;
 			else
-				cp.predecessor =  Utils.getChordFromNode(Network.get(Network.size() - 1));
+				cp.predecessor =  Utils.getChordFromNode(Network.get(Network.size() - 1)).chordId;
 
 			for (int j = 0; j < cp.fingerTable.length; j++) {
 				
 				long a = (long) (cp.chordId.longValue() + Math.pow(2, j)) %(long)Math.pow(2, Utils.M);
 				BigInteger id = new BigInteger(a+"");
-				cp.fingerTable[j] = findNodeforId(id); 
+				cp.fingerTable[j] = findNodeforId(id).chordId; 
 				
 			}
 		}
