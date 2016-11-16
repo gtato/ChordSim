@@ -16,17 +16,13 @@ public class ChordDynamicNetwork extends DynamicNetwork {
 
 	protected void remove(int n){
 		//super.remove(n);
-		ArrayList<Integer> inx = new ArrayList<Integer>();
-		for(int i = 0; i < Network.size(); i++){
-			inx.add(i);
-		}
-		Collections.shuffle(inx, CommonState.r);
+		
 		for(int i=0; i < n; i++){
-			ChordProtocol cp = Utils.getChordFromNode(Network.get(inx.get(i)));
+			int index = CommonState.r.nextInt(Network.size());
+			ChordProtocol cp = Utils.getChordFromNode(Network.get(index));
 			System.out.println("Node " + cp.chordId + " died");
 			Utils.NODES.remove(cp.chordId);
-			Network.remove(inx.get(i));
-			
+			Network.remove(index);
 //			Network.get(inx.get(i)).setFailState(Fallible.DOWN);
 		}
 	}
