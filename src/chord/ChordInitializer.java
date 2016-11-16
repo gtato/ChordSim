@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
+
 import peersim.config.Configuration;
 import peersim.core.CommonState;
 import peersim.core.Control;
@@ -14,14 +15,16 @@ import peersim.dynamics.NodeInitializer;
 public class ChordInitializer implements NodeInitializer, Control {
 
 	private static final String PAR_PROT = "protocol";
-	
+	private static final String PAR_TRANS = "transport";
 
 	int pid = 0;
+	int tid = 0;
 	
 
 	public ChordInitializer(String prefix) {
 		pid = Configuration.getPid(prefix + "." + PAR_PROT);
-		Utils.initialize(pid);
+		tid = Configuration.getPid(prefix + "." + PAR_TRANS);
+		Utils.initialize(pid, tid);
 	}
 
 	

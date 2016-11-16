@@ -19,10 +19,7 @@ import java.util.HashSet;
 
 public class ChordProtocol implements EDProtocol, Comparable<ChordProtocol> {
 
-	private static final String PAR_TRANSPORT = "transport";
- 
-	private int tid;
-	public Node node; Transport transport;
+	public Node node; ;
 	public ArrayList<ChordMessage> receivedMessages;	
 	public ChordProtocol predecessor;
 	public ChordProtocol[] fingerTable, successorList;
@@ -32,12 +29,10 @@ public class ChordProtocol implements EDProtocol, Comparable<ChordProtocol> {
 
 	public ChordProtocol(String prefix) {
 		receivedMessages = new ArrayList<ChordMessage>();
-		tid = Configuration.getPid(prefix + "." + PAR_TRANSPORT);
 	}
 
 
 	public void processEvent(Node node, int pid, Object event) {
-		transport = (Transport) node.getProtocol(this.tid);
 		ChordMessage msg = (ChordMessage) event;
 		receive(msg);		
 	}
@@ -56,6 +51,7 @@ public class ChordProtocol implements EDProtocol, Comparable<ChordProtocol> {
 	}
 	
 	private void send(ChordMessage msg, BigInteger destID){
+		Transport transport = (Transport) node.getProtocol(Utils.TID);
 		msg.addToPath(destID);
 		ChordProtocol cpDest = Utils.NODES.get(destID);  
 		if(cpDest != null && cpDest.isUp())
@@ -180,8 +176,10 @@ public class ChordProtocol implements EDProtocol, Comparable<ChordProtocol> {
 		updateSuccessors();
 		ChordProtocol node = successorList[0].predecessor;
 		if (this.compareTo(node)!=0){ 
-			if (node.isUp() && inAB(node.chordId, chordId, successorList[0].chordId))
+			if (node.isUp() && inAB(node.chordId, chordId, successorList[0].chordId)){
 				successorList[0] = node;
+				updateSuccessors();
+			}
 			successorList[0].notify(this);
 		}
 	}
@@ -265,7 +263,7 @@ public class ChordProtocol implements EDProtocol, Comparable<ChordProtocol> {
             
         } catch (CloneNotSupportedException e) {
         } // never happens
-        return inp; 
+        return inp;
     }
 
 	

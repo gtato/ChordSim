@@ -12,13 +12,15 @@ import peersim.core.Node;
 
 public class Utils {
 	public static int PID;
+	public static int TID;
 	public static int M;
 	public static int SUCC_SIZE;
 	public static HashMap<BigInteger, ChordProtocol> NODES = new HashMap<BigInteger, ChordProtocol>();
 	private static boolean initialized = false;
-	public static void initialize(int pid){
+	public static void initialize(int pid, int tid){
 		if(!initialized){
 			PID = pid;
+			TID = pid;
 			SUCC_SIZE = Configuration.getInt("SUCC_SIZE", 4);
 			M = Configuration.getInt("M", 10);
 		}
