@@ -16,13 +16,18 @@ public class Utils {
 	public static int M;
 	public static int SUCC_SIZE;
 	public static HashMap<BigInteger, ChordProtocol> NODES = new HashMap<BigInteger, ChordProtocol>();
+	public static ArrayList<ChordMessage> receivedMessages;
 	private static boolean initialized = false;
+	
+	public static int FAILS=0, SUCCESS=0; 
+	
 	public static void initialize(int pid, int tid){
 		if(!initialized){
 			PID = pid;
-			TID = pid;
+			TID = tid;
 			SUCC_SIZE = Configuration.getInt("SUCC_SIZE", 4);
 			M = Configuration.getInt("M", 10);
+			receivedMessages = new ArrayList<ChordMessage>();
 		}
 	}
 	

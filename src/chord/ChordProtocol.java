@@ -20,15 +20,14 @@ import java.util.HashSet;
 public class ChordProtocol implements EDProtocol, Comparable<ChordProtocol> {
 
 	public Node node; ;
-	public ArrayList<ChordMessage> receivedMessages;	
 	public ChordProtocol predecessor;
 	public ChordProtocol[] fingerTable, successorList;
 	public BigInteger chordId;
 
-	public int fails=0, success=0, fingerToFix=0;
+	public int  fingerToFix=0;
 
 	public ChordProtocol(String prefix) {
-		receivedMessages = new ArrayList<ChordMessage>();
+		
 	}
 
 
@@ -70,15 +69,15 @@ public class ChordProtocol implements EDProtocol, Comparable<ChordProtocol> {
 		else{
 			ChordProtocol dest = closestPrecedingNode(target);
 			if (dest == null) 
-				fails++;
+				Utils.FAILS++;
 			else 
 				send(msg, dest.chordId);
 		}
 	}
 
 	public void onFinal(ChordMessage msg){
-		receivedMessages.add(msg);
-		success++;
+		Utils.receivedMessages.add(msg);
+		Utils.SUCCESS++;
 	}
 	
 	public void join(Node myNode) {
@@ -233,9 +232,6 @@ public class ChordProtocol implements EDProtocol, Comparable<ChordProtocol> {
 	}
 	
 
-	public void emptyReceivedMessage() {
-		this.receivedMessages = new ArrayList<ChordMessage>();
-	}
 	
 	@Override
 	public String toString(){

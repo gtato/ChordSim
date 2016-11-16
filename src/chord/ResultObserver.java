@@ -13,38 +13,27 @@ public class ResultObserver implements Control {
 	
 	public boolean execute() {
 		
-		
-		int totFails = 0;
-		int totSuccess = 0;
 		ArrayList<Integer> hopCounters = new ArrayList<Integer>(); 
-		
-		hopCounters.clear();
+	
 		int max = 0;
 		int min = Integer.MAX_VALUE;
-		for (int i = 0; i < Network.size(); i++) {
-			ChordProtocol cp = Utils.getChordFromNode(Network.get(i));
-			totFails += cp.fails;
-			totSuccess += cp.success;
 			
-			if (cp.receivedMessages.size() > 0) {
-				for (int j = 0; j < cp.receivedMessages.size(); j++){
-					
-					@SuppressWarnings("unchecked")
-					int hops = ((ArrayList<String>)cp.receivedMessages.get(j).getContent()).size()-1;
-					if (hops > max)
-						max = hops;
-					if (hops< min)
-						min = hops;
-					hopCounters.add(hops);
-				}
-				
-			}
-			cp.emptyReceivedMessage();
+			
+		for (int j = 0; j < Utils.receivedMessages.size(); j++){
+			@SuppressWarnings("unchecked")
+			int hops = ((ArrayList<String>)Utils.receivedMessages.get(j).getContent()).size()-1;
+			if (hops > max)
+				max = hops;
+			if (hops< min)
+				min = hops;
+			hopCounters.add(hops);
 		}
+				
+		
 		double mean = meanCalculator(hopCounters);
 		
 		System.out.println("Mean:  " + mean + " Max Value: " + max+ " Min Value: " + min);
-		System.out.println("Failures: " + totFails+ " Success: " + totSuccess);
+		System.out.println("Failures: " + Utils.FAILS+ " Success: " + Utils.SUCCESS);
 		System.out.println("Final system size: " + Network.size());
 		return false;
 	}
