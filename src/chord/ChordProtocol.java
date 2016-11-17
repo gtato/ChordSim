@@ -3,7 +3,6 @@
  */
 package chord;
 
-import peersim.config.Configuration;
 import peersim.core.CommonState;
 import peersim.core.Network;
 import peersim.core.Node;
@@ -99,36 +98,6 @@ public class ChordProtocol implements EDProtocol, Comparable<ChordProtocol> {
 		Utils.SUCCESS++;
 	}
 	
-	public void join(Node myNode) {
-		node = myNode;
-		// search a bootstrap node to join  
-		Node n;
-		do {
-			n = Network.get(CommonState.r.nextInt(Network.size()));
-		} while (n == null || !n.isUp());
-		
-		chordId = Utils.generateNewID();
-		Utils.NODES.put(chordId, this);
-		ChordProtocol cpRemote = Utils.getChordFromNode(n);
-		successorList = new BigInteger[Utils.SUCC_SIZE];
-		fingerTable = new BigInteger[Utils.M];
-
-		findSuccessor(cpRemote.chordId, chordId, "successor first");
-		for (int i = 0; i < fingerTable.length; i++) {
-			long a = (long) (chordId.longValue() + Math.pow(2, i)) %(long)Math.pow(2, Utils.M);
-			BigInteger id = new BigInteger(a+"");
-			findSuccessor(cpRemote.chordId, id, "finger " + i);
-		}
-		System.out.println("Node " + chordId + " is in da house");
-	}
-
-	public void findSuccessor(BigInteger nodeToAsk, BigInteger id, String label){
-		ChordMessage predmsg = new ChordMessage(ChordMessage.SUCCESSOR, id);
-		predmsg.setLabel(label);
-		predmsg.setSender(chordId);
-		send(predmsg, nodeToAsk);
-	}
-	
 	public void onSuccessorFound(ChordMessage msg){
 		String label = msg.getLabel();
 		ChordProtocol succ = (ChordProtocol)msg.getContent();
@@ -161,19 +130,37 @@ public class ChordProtocol implements EDProtocol, Comparable<ChordProtocol> {
 			predecessor = nodeId;
 	}
 	
-	
-//	public ChordProtocol findSuccessor(BigInteger id) {
-//		ChordProtocol tmp = findPredecessor(id);
-//		return tmp.successorList[0];
-//	}
-	
-//	public ChordProtocol findPredecessor(BigInteger id) {
-//		ChordProtocol tmp = this;
-//		while(!inAB(id, tmp.chordId, tmp.successorList[0]))
-//			tmp = tmp.closestPrecedingNode(id);
-//		return tmp;
-//	}
+	public void join(Node myNode) {
+		node = myNode;
+		// search a bootstrap node to join  
+		Node n;
+		do {
+			n = Network.get(CommonState.r.nextInt(Network.size()));
+		} while (n == null || !n.isUp());
+		
+		chordId = Utils.generateNewID();
+		Utils.NODES.put(chordId, this);
+		ChordProtocol cpRemote = Utils.getChordFromNode(n);
+		successorList = new BigInteger[Utils.SUCC_SIZE];
+		fingerTable = new BigInteger[Utils.M];
 
+		findSuccessor(cpRemote.chordId, chordId, "successor first");
+		for (int i = 0; i < fingerTable.length; i++) {
+			long a = (long) (chordId.longValue() + Math.pow(2, i)) %(long)Math.pow(2, Utils.M);
+			BigInteger id = new BigInteger(a+"");
+			findSuccessor(cpRemote.chordId, id, "finger " + i);
+		}
+		System.out.println("Node " + chordId + " is in da house");
+	}
+
+	public void findSuccessor(BigInteger nodeToAsk, BigInteger id, String label){
+		ChordMessage predmsg = new ChordMessage(ChordMessage.SUCCESSOR, id);
+		predmsg.setLabel(label);
+		predmsg.setSender(chordId);
+		send(predmsg, nodeToAsk);
+	}
+	
+	
 	private BigInteger closestPrecedingNode(BigInteger id) {
 
 		ArrayList<BigInteger> fullTable = getFullTable();
@@ -186,11 +173,6 @@ public class ChordProtocol implements EDProtocol, Comparable<ChordProtocol> {
 			}
 		}
 		
-		//do smth with downFingers
-//		if(found == null){
-//			stabilize();
-//			return successorList[0];
-//		}
 		return found;
 	}
 
@@ -212,36 +194,6 @@ public class ChordProtocol implements EDProtocol, Comparable<ChordProtocol> {
 		fullTable.add(predecessor);
 		return fullTable;
 	}
-//	// debug function
-//	private void printFingers() {
-//		for (int i = fingerTable.length - 1; i > 0; i--) {
-//			if (fingerTable[i] == null) {
-//				System.out.println("Finger " + i + " is null");
-//				continue;
-//			}
-//			if(this.compareTo(fingerTable[i])==0)
-//				break;
-//			System.out.println("Finger["+ i+ "] = chordId " + fingerTable[i].chordId);
-//		}
-//	}
-
-	
-//	public void stabilize() {
-//		updateSuccessors();
-//		ChordProtocol node = successorList[0].predecessor;
-//		if (this.compareTo(node)!=0){ 
-//			if (node.isUp() && inAB(node.chordId, chordId, successorList[0].chordId))
-//				successorList[0] = node;
-//			successorList[0].notify(this);
-//		}
-//	}
-//
-//	
-//
-//	public void notify(BigInteger nodeId){
-//		if (predecessor == null || inAB(nodeId, predecessor, this.chordId))
-//			predecessor = nodeId;
-//	}
 
 	public void notify(BigInteger nodeId){
 		ChordMessage notifyMsg = new ChordMessage(ChordMessage.NOTIFY, chordId);
@@ -269,7 +221,6 @@ public class ChordProtocol implements EDProtocol, Comparable<ChordProtocol> {
 		BigInteger id = new BigInteger(a+"");
 		findSuccessor(chordId, id, "finger " + fingerToFix);
 		
-//		fingerTable[fingerToFix] = findSuccessor(new BigInteger(id+""));
 	}
 
 	
