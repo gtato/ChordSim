@@ -3,7 +3,6 @@
  */
 package chord;
 
-import peersim.config.Configuration;
 import peersim.core.CommonState;
 import peersim.core.Network;
 import peersim.core.Node;
@@ -186,7 +185,9 @@ public class ChordProtocol implements EDProtocol, Comparable<ChordProtocol> {
 	
 
 	public void notify(ChordProtocol node){
-		if (predecessor == null || inAB(node.chordId, predecessor.chordId, this.chordId))
+		if (predecessor == null || 
+			(inAB(node.chordId, predecessor.chordId, this.chordId)
+					&& !node.equals(this)))
 			predecessor = node;
 	}
 
