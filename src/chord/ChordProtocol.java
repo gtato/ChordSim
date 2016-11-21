@@ -126,7 +126,9 @@ public class ChordProtocol implements EDProtocol, Comparable<ChordProtocol> {
 	
 	public void onNotify(ChordMessage msg){
 		BigInteger nodeId = (BigInteger) msg.getContent();
-		if (predecessor == null || inAB(nodeId, predecessor, this.chordId))
+		if (predecessor == null || 
+			(inAB(nodeId, predecessor, this.chordId)
+			&& !nodeId.equals(chordId)))
 			predecessor = nodeId;
 	}
 	

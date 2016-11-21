@@ -48,6 +48,11 @@ public class ChordMessage {
 
 	
 	public void addToPath(BigInteger chordId){
+		if(path.size() > 0){
+			String last = path.get(path.size()-1); 
+			if(last != null && last.equals(chordId.toString()))
+				return;
+		}
 		path.add(chordId.toString());
 	}
 	public ArrayList<String> getPath(){
