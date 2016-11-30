@@ -104,13 +104,13 @@ public class ChordProtocol implements EDProtocol, Comparable<ChordProtocol> {
 		if(label.contains("successor")) //predecessor
 		{
 			BigInteger pred = succ.predecessor;
-			if(label.contains("first") || pred.equals(chordId)){
+			if(label.contains("first") || pred.equals(chordId) || !Utils.isUp(pred)){
 				successorList[0] = succ.chordId;
 				if(label.contains("first")) predecessor = pred;
 				System.arraycopy(succ.successorList,0,successorList,1,successorList.length-1);
 			}
 			else if(label.contains("stabilize")){
-				if (Utils.isUp(pred) && inAB(pred, chordId, succ.chordId)){
+				if (inAB(pred, chordId, succ.chordId)){
 					successorList[0] = pred;
 					successorList[1] = succ.chordId;
 					System.arraycopy(succ.successorList,0,successorList,2,successorList.length-2);
