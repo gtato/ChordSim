@@ -40,7 +40,7 @@ public class ChordInitializer implements NodeInitializer, Control {
 		NodeComparator nc = new NodeComparator(pid);
 		Network.sort(nc);
 		myCreateFingerTable();
-		printNeighs();
+//		printNeighs();
 		return false;
 	}
 	
