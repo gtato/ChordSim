@@ -11,9 +11,9 @@
     <property name="source" value="1.7"/>
     <path id="ChordSim.classpath">
         <pathelement location="bin"/>
-        <pathelement location="../../../peersim-1.0.5/djep-1.0.0.jar"/>
-        <pathelement location="../../../peersim-1.0.5/jep-2.3.0.jar"/>
-        <pathelement location="../../../peersim-1.0.5/peersim-1.0.5.jar"/>
+        <pathelement location="libs/djep-1.0.0.jar"/>
+        <pathelement location="libs/jep-2.3.0.jar"/>
+        <pathelement location="libs/peersim-1.0.5.jar"/>
     </path>
     <target name="init">
         <mkdir dir="bin"/>
