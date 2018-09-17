@@ -12,6 +12,7 @@ import peersim.transport.Transport;
 import java.math.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 
@@ -144,6 +145,7 @@ public class ChordProtocol implements EDProtocol, Comparable<ChordProtocol> {
 		hs.addAll(Arrays.asList(fingerTable));
 		hs.addAll(Arrays.asList(successorList));
 		fullTable.addAll(hs);
+		
 		fullTable.sort(new Comparator<ChordProtocol>() {
 			
 			public int compare(ChordProtocol arg0, ChordProtocol arg1) {
@@ -211,6 +213,7 @@ public class ChordProtocol implements EDProtocol, Comparable<ChordProtocol> {
 			fingerToFix = 0;
 		long id = (long) (chordId.longValue() + Math.pow(2, fingerToFix)) %(long)Math.pow(2, Utils.M);
 		fingerTable[fingerToFix] = findSuccessor(new BigInteger(id+""));
+		fingerToFix++;
 	}
 
 	
