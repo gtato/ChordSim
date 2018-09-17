@@ -222,7 +222,7 @@ public class ChordProtocol implements EDProtocol, Comparable<ChordProtocol> {
 		long a = (long) (chordId.longValue() + Math.pow(2, fingerToFix)) %(long)Math.pow(2, Utils.M);
 		BigInteger id = new BigInteger(a+"");
 		findSuccessor(chordId, id, "finger " + fingerToFix);
-		
+		fingerToFix++;
 	}
 
 	
